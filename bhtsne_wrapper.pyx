@@ -7,7 +7,7 @@ from libcpp cimport bool
 cdef extern from "tsne.h":
     cdef cppclass TSNE:
         TSNE()
-        void run(double* X, int N, int D, double* Y, int no_dims, double perplexity, double theta, int max_iter, int rand_seed, bool skip_random_init)
+        void run(double* X, int N, int D, double* Y, int no_dims, double perplexity, double theta, int max_iter, int stop_lying_iter, int mom_switch_iter, double momentum, double final_momentum, double eta, int rand_seed, bool skip_random_init)
 
 cdef class BHTSNE:
     cdef TSNE* tsne
@@ -20,10 +20,10 @@ cdef class BHTSNE:
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
-    def run(self, X, no_rows, no_cols, no_dims, perplexity, theta, max_iter, rand_seed, seed_positions, skip_random_init):
+    def run(self, X, no_rows, no_cols, no_dims, perplexity, theta, max_iter, stop_lying_iter, mom_switch_iter, momentum, final_momentum, eta, rand_seed, seed_positions, skip_random_init):
         cdef np.ndarray[np.float64_t, ndim=2, mode='c'] _X = np.ascontiguousarray(X)
         cdef np.ndarray[np.float64_t, ndim=2, mode='c'] Y = np.zeros((no_rows, no_dims), dtype=np.float64)
         if skip_random_init:
           Y = seed_positions
-        self.tsne.run(&_X[0,0], no_rows, no_cols, &Y[0,0], no_dims, perplexity, theta, max_iter, rand_seed, skip_random_init)
+        self.tsne.run(&_X[0,0], no_rows, no_cols, &Y[0,0], no_dims, perplexity, theta, max_iter, stop_lying_iter, mom_switch_iter, momentum, final_momentum, eta, rand_seed, skip_random_init)
         return Y

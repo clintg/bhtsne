@@ -46,7 +46,24 @@
 using namespace std;
 
 // Perform t-SNE
-void TSNE::run(double* X, int N, int D, double* Y, int no_dims, double perplexity, double theta, int max_iter, int rand_seed, bool skip_random_init) {
+void TSNE::run(
+                double* X,
+                int N,
+                int D,
+                double* Y,
+                int no_dims,
+                double perplexity,
+                double theta,
+                int max_iter,
+                int stop_lying_iter,
+                int mom_switch_iter,
+                double momentum,
+                double final_momentum,
+                double eta,
+                int rand_seed,
+                bool skip_random_init
+                )
+{
 
     // Set random seed
     if (skip_random_init != true) {
