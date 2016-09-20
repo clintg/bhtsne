@@ -81,12 +81,9 @@ void TSNE::run(
     printf("Using no_dims = %d, perplexity = %f, and theta = %f\n", no_dims, perplexity, theta);
     bool exact = (theta == .0) ? true : false;
 
-    // Set learning parameters
+    // Start timers
     float total_time = .0;
     clock_t start, end;
-	int stop_lying_iter = 250, mom_switch_iter = 250;
-	double momentum = .5, final_momentum = .8;
-	double eta = 200.0;
 
     // Allocate some memory
     double* dY    = (double*) malloc(N * no_dims * sizeof(double));
